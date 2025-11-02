@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ThinkMath | Yhteenlasku</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo&display=swap"
+      rel="stylesheet"/>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"/>
+    <link href="../css/math.css" rel="stylesheet" />
+    <link href="../css/addition.css" rel="stylesheet" />
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <div class="container-fluid flex-shrink-0">
+      <!-- Header -->
+      <header
+        class="d-flex justify-content-center align-items-center header-image"
+      ></header>
+
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Etusivu</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./info.html">Tietoa</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./scores.html">Pisteet</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle active"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="true">
+                  Pelit
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="./addition.html">Yhteenlasku</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="./subtraction.html">Vähennyslasku</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="./comparison.html">Vertailutehtävät</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main -->
+      <main class="container my-4">
+        <section class="text-center my-3">
+          <h1 class="mb-1">Yhteenlasku</h1>
+          <p class="text-muted">Valitse taso ja ratkaise 10 tehtävää. Hienoa, jos onnistut!</p>
+        </section>
+
+        <!-- Controls -->
+        <section class="mb-3">
+          <div class="row g-3 align-items-end">
+            <div class="col-md-6">
+              <label for="level" class="form-label">Vaikeustaso</label>
+              <select id="level" class="form-select">
+                <option value="A" selected>A — Löydä oikea vastaus (0–20)</option>
+                <option value="B">B — Vedä ja pudota (0–20)</option>
+                <option value="C">C — Valitse oikea lauseke (0–20)</option>
+              </select>
+            </div>
+            <div class="col-md-6 d-flex gap-2">
+              <button id="startBtn" class="btn btn-primary flex-grow-1">Aloita</button>
+              <button id="resetBtn" class="btn btn-outline-secondary">Nollaa</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Game Card -->
+        <section class="card game-card p-3 p-md-4">
+          <!-- Welcome -->
+          <div id="welcomePane" class="welcome-pane text-center">
+            <h2 class="mb-3">Tervetuloa peliin!</h2>
+            <p class="lead mb-3">
+              Aloittaaksesi valitse <strong>Vaikeustaso</strong> ylhäältä ja paina <strong>Aloita</strong>.
+            </p>
+            <ul class="list-unstyled m-0">
+              <li>• 10 tehtävää per peli</li>
+              <li>• Taso A: valitse oikea vastaus</li>
+              <li>• Taso B: vedä ja pudota puuttuva numero</li>
+              <li>• Taso C: valitse oikea lauseke annettuun tulokseen</li>
+            </ul>
+          </div>
+
+          <!-- Boards wrapper -->
+          <div id="board" class="mb-3">
+            <!-- Level A -->
+            <div id="board-A" class="d-none">
+              <div class="row g-3 justify-content-center align-items-center">
+                <div class="col-12 text-center">
+                  <div class="expr-box">
+                    <div id="aExpr" class="expr" aria-live="polite"></div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div id="aOptions" class="answers-grid"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Level B -->
+            <div id="board-B" class="d-none">
+              <div class="row g-3">
+                <div class="col-12">
+                  <div id="bRows" class="b-rows"></div>
+                </div>
+                <div class="col-12">
+                  <div class="b-bank-title">Raahaa oikea numero?</div>
+                  <div id="bBank" class="b-bank"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Level C -->
+            <div id="board-C" class="d-none">
+              <div class="row g-3 justify-content-center align-items-center">
+                <div class="col-12 text-center">
+                  <div class="target-box">
+                    <span>Tavoite:</span>
+                    <strong id="cTarget">10</strong>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div id="cOptions" class="expr-grid"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feedback -->
+          <div id="feedback" class="feedback text-center fw-semibold"></div>
+
+          <!-- Finish actions -->
+          <div id="finishActions" class="finish-actions d-none">
+            <a href="./scores.html" class="to-scores">Näytä pisteet</a>
+            <button id="backToWelcome" class="btn btn-outline-secondary">Palaa ohjeisiin</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 text-center custom-footer">
+      <div class="container">
+        <span>Yritys- tai hankelähtöinen tuotekehitysprojekti | TIK24KM | Irina Gerasina</span>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../js/addition.js" defer></script>
+  </body>
+</html>
+
