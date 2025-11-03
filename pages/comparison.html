@@ -122,7 +122,6 @@
 
     <!-- Boards -->
     <div id="board" class="mb-3">
-      <!-- sign -->
       <div id="board-sign" class="d-none">
         <div class="row g-2 align-items-center justify-content-center">
           <div class="col-5 col-md-4">
@@ -173,10 +172,11 @@
 
     <div id="feedback" class="feedback text-center fw-semibold"></div>
 
-    <!-- ссылка на страницу с результатами (по желанию) -->
-    <div class="text-center mt-3">
-      <a href="./scores.html" class="to-scores">Näytä pisteet</a>
+    <div id="finalCtas" class="text-center mt-3 d-flex justify-content-center gap-2 flex-wrap">
+      <a id="scoreLink" href="./scores.html" class="to-scores d-none">Näytä pisteet</a>
+      <button id="backToWelcomeBtn" class="btn btn-outline-secondary d-none">Palaa ohjeisiin</button>
     </div>
+
   </section>
 </main>
     </div>

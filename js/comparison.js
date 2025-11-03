@@ -15,11 +15,12 @@ const el = {
   level: document.getElementById('level'),
   startBtn: document.getElementById('startBtn'),
   resetBtn: document.getElementById('resetBtn'),
-  feedback: document.getElementById('feedback'),
+
   welcomePane: document.getElementById('welcomePane'),
   boardSign: document.getElementById('board-sign'),
   boardMore: document.getElementById('board-more'),
   boardOrder: document.getElementById('board-order'),
+
   leftExpr: document.getElementById('leftExpr'),
   rightExpr: document.getElementById('rightExpr'),
   moreLeft: document.getElementById('moreLeft'),
@@ -27,7 +28,12 @@ const el = {
   orderPool: document.getElementById('orderPool'),
   orderTarget: document.getElementById('orderTarget'),
   checkOrderBtn: document.getElementById('checkOrderBtn'),
-  showScoresBtn: document.getElementById('showScoresBtn') || document.querySelector('.to-scores'),
+
+  feedback: document.getElementById('feedback'),
+
+  finalCtas: document.getElementById('finalCtas'),
+  scoreLink: document.getElementById('scoreLink'),
+  backToWelcomeBtn: document.getElementById('backToWelcomeBtn'),
 };
 
 // Utils
@@ -41,6 +47,7 @@ function setFeedback(text, ok = null) {
   if (ok === true) el.feedback.classList.add('text-success');
   if (ok === false) el.feedback.classList.add('text-danger');
 }
+function clearFeedback(){ setFeedback(''); }
 
 function setBoardInputsDisabled(disabled) {
   document.querySelectorAll('.symbol-btn,[data-more],[draggable],#checkOrderBtn')
@@ -51,6 +58,16 @@ function setSelectsDisabled(disabled) {
   if (el.level) el.level.disabled = disabled;
 }
 
+function hideEndButtons(){
+  el.scoreLink?.classList.add('d-none');
+  el.backToWelcomeBtn?.classList.add('d-none');
+}
+function showEndButtons(){
+  el.scoreLink?.classList.remove('d-none');
+  el.backToWelcomeBtn?.classList.remove('d-none');
+}
+
+// fit for sign-mode long expressions
 function fitTextToBox(node, { min = 22, step = 0.9 } = {}) {
   if (!node) return;
   const box = node.parentElement;
@@ -67,18 +84,10 @@ function fitTextToBox(node, { min = 22, step = 0.9 } = {}) {
     guard++;
   }
 }
-
-// Add zero-width break after +/− for soft wrap (mobile)
-function softWrapExpr(expr) {
-  return expr.replace(/([+\-])/g, '$1\u200B');
-}
-
+const softWrapExpr = (expr) => expr.replace(/([+\-])/g, '$1\u200B');
 function toggleWrapForLevel() {
   const allowWrap = state.level === 'C' && isMobile();
-  [el.leftExpr, el.rightExpr].forEach(n => {
-    if (!n) return;
-    n.classList.toggle('wrap-expr', allowWrap);
-  });
+  [el.leftExpr, el.rightExpr].forEach(n => n?.classList.toggle('wrap-expr', allowWrap));
 }
 
 // Welcome / Boards
@@ -87,9 +96,10 @@ function showWelcome() {
   el.boardMore.classList.add('d-none');
   el.boardOrder.classList.add('d-none');
   el.welcomePane.classList.remove('d-none');
-  setFeedback('');
+  clearFeedback();
   setBoardInputsDisabled(true);
   setSelectsDisabled(false);
+  hideEndButtons();
 }
 
 function renderBoard() {
@@ -99,6 +109,7 @@ function renderBoard() {
   if (state.mode === 'sign') el.boardSign.classList.remove('d-none');
   else if (state.mode === 'more') el.boardMore.classList.remove('d-none');
   else if (state.mode === 'order') el.boardOrder.classList.remove('d-none');
+  hideEndButtons();
 }
 
 // Task generation
@@ -108,10 +119,8 @@ function levelPicker() {
   const C = () => {
     const a = randInt(0, 50), b = randInt(0, 50);
     const op = choice(['+','-']);
-    const expr = op === '+'
-      ? `${a} + ${b}`
-      : `${Math.max(a,b)} - ${Math.min(a,b)}`;
-    const val = op === '+' ? a + b : Math.abs(a - b);
+    const expr = op === '+' ? `${a} + ${b}` : `${Math.max(a,b)} - ${Math.min(a,b)}`;
+    const val  = op === '+' ? a + b : Math.abs(a - b);
     return { v: val, r: () => expr };
   };
   return state.level === 'A' ? A : state.level === 'B' ? B : C;
@@ -120,29 +129,17 @@ function levelPicker() {
 function genSignTask() {
   const pick = levelPicker();
   const L = pick(), R = pick();
-  return {
-    valueLeft: L.v, valueRight: R.v,
-    renderLeft: L.r(L.v), renderRight: R.r(R.v),
-  };
+  return { valueLeft: L.v, valueRight: R.v, renderLeft: L.r(L.v), renderRight: R.r(R.v) };
 }
 
-/* Kumpi on enemmän?
-   A
-   B
-   C
-*/
+// Kumpi on enemmän?
 function genMoreTask() {
   if (state.level === 'A') {
-    const L = randInt(1, 12);
-    const R = randInt(1, 12);
-    return { kind: 'dots', L, R };
+    return { kind: 'dots', L: randInt(1,12), R: randInt(1,12) };
   }
   if (state.level === 'B') {
-    const L = randInt(8, 20);
-    const R = randInt(8, 20);
-    return { kind: 'dots', L, R };
+    return { kind: 'dots', L: randInt(8,20), R: randInt(8,20) };
   }
-
   const makeExprSide = () => {
     const op = choice(['+','-']);
     if (op === '+') {
@@ -156,27 +153,17 @@ function genMoreTask() {
       return { op, a, b, value: a - b };
     }
   };
-
-  const left  = makeExprSide();
-  const right = makeExprSide();
+  const left = makeExprSide(), right = makeExprSide();
   return {
-    kind: 'exprDots3',
-    leftOp:  left.op,
-    rightOp: right.op,
-    leftA:   left.a,
-    leftB:   left.b,
-    rightA:  right.a,
-    rightB:  right.b,
-    L:       left.value,
-    R:       right.value,
+    kind:'exprDots3',
+    leftOp:left.op, rightOp:right.op,
+    leftA:left.a, leftB:left.b,
+    rightA:right.a, rightB:right.b,
+    L:left.value, R:right.value
   };
 }
 
-/* Järjestä luvut
-   A
-   B
-   C
-*/
+// Järjestä luvut
 function genOrderTask() {
   const count = 4 + (Math.random() > 0.6 ? 1 : 0);
 
@@ -185,11 +172,7 @@ function genOrderTask() {
     const arr = Array.from({ length: count }, () => randInt(0, max));
     return {
       kind: 'numbers',
-      items: arr.map(v => ({
-        value: v,
-        labelInline: String(v),
-        labelStack: String(v),
-      })),
+      items: arr.map(v => ({ value: v, labelInline: String(v), labelStack: String(v) })),
       answer: [...arr].sort((a,b)=>a-b)
     };
   }
@@ -200,28 +183,20 @@ function genOrderTask() {
       const total = randInt(0, 20);
       const a = randInt(0, total);
       const b = total - a;
-      return {
-        a, b, op, value: total,
-        labelInline: `${a} + ${b}`,
-        labelStack: `${a}\n+\n${b}`,
-      };
+      return { a,b,op,value:total, labelInline:`${a} + ${b}`, labelStack:`${a}\n+\n${b}` };
     } else {
       const a = randInt(0, 20);
       const b = randInt(0, a);
-      return {
-        a, b, op, value: a - b,
-        labelInline: `${a} - ${b}`,
-        labelStack: `${a}\n-\n${b}`,
-      };
+      return { a,b,op,value:a-b, labelInline:`${a} - ${b}`, labelStack:`${a}\n-\n${b}` };
     }
   };
 
   const items = Array.from({ length: count }, makeExpr);
   const answer = [...items.map(it => it.value)].sort((a,b)=>a-b);
-  return { kind: 'expr', items, answer };
+  return { kind:'expr', items, answer };
 }
 
-// Render tasks
+// Rendering
 function renderSignTask(task) {
   const useSoftWrap = state.level === 'C' && isMobile();
   const left  = useSoftWrap ? softWrapExpr(task.renderLeft)  : task.renderLeft;
@@ -234,72 +209,49 @@ function renderSignTask(task) {
 
   el.leftExpr.classList.add('animate');
   el.rightExpr.classList.add('animate');
-  setTimeout(() => {
-    el.leftExpr.classList.remove('animate');
-    el.rightExpr.classList.remove('animate');
-  }, 250);
+  setTimeout(() => { el.leftExpr.classList.remove('animate'); el.rightExpr.classList.remove('animate'); }, 250);
 
   const minAB = isMobile() ? 26 : 32;
   const minC  = isMobile() ? 16 : 20;
   const min   = state.level === 'C' ? minC : minAB;
-
   fitTextToBox(el.leftExpr,  { min, step: 0.9 });
   fitTextToBox(el.rightExpr, { min, step: 0.9 });
 }
 
 function renderMoreTask(task) {
-  const makeDot = () => {
-    const d = document.createElement('span');
-    d.className = 'dot';
-    return d;
-  };
+  const makeDot = () => { const d = document.createElement('span'); d.className = 'dot'; return d; };
 
   const makeDotRows = (n, perRow = 10, maxRows = 3) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'dot-block';
+    const wrap = document.createElement('div'); wrap.className = 'dot-block';
     let left = n, rows = 0;
     while (left > 0 && rows < maxRows) {
-      const row = document.createElement('div');
-      row.className = 'dot-row';
+      const row = document.createElement('div'); row.className = 'dot-row';
       const take = Math.min(perRow, left);
       for (let i = 0; i < take; i++) row.appendChild(makeDot());
-      wrap.appendChild(row);
-      left -= take;
-      rows += 1;
+      wrap.appendChild(row); left -= take; rows += 1;
     }
     return wrap;
   };
 
   const makeVerticalExpr = (a, op, b) => {
-    const box = document.createElement('div');
-    box.className = 'more-expr-vertical';
+    const box = document.createElement('div'); box.className = 'more-expr-vertical';
     box.setAttribute('aria-label', `${a} ${op} ${b} pistettä`);
-    const topDots = makeDotRows(a);
-    const opLine  = document.createElement('div');
-    opLine.className = 'op-line';
-    opLine.textContent = op;
-    const bottomDots = makeDotRows(b);
-    box.appendChild(topDots);
-    box.appendChild(opLine);
-    box.appendChild(bottomDots);
-    return box;
+    const top = makeDotRows(a), opLine = document.createElement('div'), bot = makeDotRows(b);
+    opLine.className = 'op-line'; opLine.textContent = op;
+    box.appendChild(top); box.appendChild(opLine); box.appendChild(bot); return box;
   };
 
-  el.moreLeft.innerHTML = '';
-  el.moreRight.innerHTML = '';
-
+  el.moreLeft.innerHTML = ''; el.moreRight.innerHTML = '';
   if (task.kind === 'dots') {
     el.moreLeft.appendChild(makeDotRows(task.L));
     el.moreRight.appendChild(makeDotRows(task.R));
-  } else if (task.kind === 'exprDots3') {
-    const leftExpr  = makeVerticalExpr(task.leftA,  task.leftOp,  task.leftB);
-    const rightExpr = makeVerticalExpr(task.rightA, task.rightOp, task.rightB);
-    el.moreLeft.appendChild(leftExpr);
-    el.moreRight.appendChild(rightExpr);
+  } else {
+    el.moreLeft.appendChild(makeVerticalExpr(task.leftA, task.leftOp, task.leftB));
+    el.moreRight.appendChild(makeVerticalExpr(task.rightA, task.rightOp, task.rightB));
   }
 }
 
-// Order rendering helpers (for Level C)
+// Order cards (Level C stack layout on mobile)
 function setOrderCardLabel(btn) {
   const inline = btn.dataset.labelInline;
   const stack  = btn.dataset.labelStack;
@@ -312,12 +264,9 @@ function setOrderCardLabel(btn) {
     btn.classList.remove('order-stack');
   }
 }
-
 function updateOrderCardLabels() {
-  document.querySelectorAll('#board-order button[data-label-inline]')
-    .forEach(setOrderCardLabel);
+  document.querySelectorAll('#board-order button[data-label-inline]').forEach(setOrderCardLabel);
 }
-
 function renderOrderTask(task) {
   el.orderPool.innerHTML = '';
   el.orderTarget.innerHTML = '';
@@ -325,25 +274,17 @@ function renderOrderTask(task) {
   if (task.kind === 'numbers') {
     task.items.forEach(({ value, labelInline }) => {
       const card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'btn btn-outline-primary';
-      card.textContent = labelInline;
-      card.draggable = true;
-      card.dataset.value = value;
+      card.type='button'; card.className='btn btn-outline-primary';
+      card.textContent = labelInline; card.draggable = true; card.dataset.value = value;
       card.addEventListener('dragstart', (e)=>e.dataTransfer.setData('text/plain', String(value)));
       card.addEventListener('click', ()=> el.orderTarget.appendChild(card));
       el.orderPool.appendChild(card);
     });
   } else {
-
     task.items.forEach(({ value, labelInline, labelStack }) => {
       const card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'btn btn-outline-primary';
-      card.draggable = true;
-      card.dataset.value = value;
-      card.dataset.labelInline = labelInline;
-      card.dataset.labelStack  = labelStack;
+      card.type='button'; card.className='btn btn-outline-primary'; card.draggable = true;
+      card.dataset.value=value; card.dataset.labelInline=labelInline; card.dataset.labelStack=labelStack;
       setOrderCardLabel(card);
       card.addEventListener('dragstart', (e)=>e.dataTransfer.setData('text/plain', String(value)));
       card.addEventListener('click', ()=> el.orderTarget.appendChild(card));
@@ -367,7 +308,8 @@ function renderOrderTask(task) {
 
 // Flow
 function renderTask(){
-  setFeedback('');
+  clearFeedback();
+  hideEndButtons();
   if (state.mode === 'sign') { state.currentTask = genSignTask();  renderSignTask(state.currentTask); }
   else if (state.mode === 'more') { state.currentTask = genMoreTask(); renderMoreTask(state.currentTask); }
   else { state.currentTask = genOrderTask(); renderOrderTask(state.currentTask); }
@@ -413,7 +355,8 @@ function startGame(){
   renderBoard();
   setBoardInputsDisabled(false);
   setSelectsDisabled(true);
-  setFeedback('');
+  hideEndButtons();
+  clearFeedback();
   renderTask();
 }
 
@@ -435,7 +378,7 @@ function finalizeRun(){
   localStorage.setItem('cmp_last', JSON.stringify(payload));
 
   setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);
-  setTimeout(showWelcome, 800);
+  showEndButtons();
 }
 
 function resetGame(){
@@ -455,9 +398,11 @@ document.addEventListener('click', (e)=>{
   const more = e.target.closest('[data-more]');
   if (more && !more.disabled) handleMoreAnswer(more.dataset.more);
 });
-if (el.checkOrderBtn) el.checkOrderBtn.addEventListener('click', handleOrderCheck);
-if (el.startBtn) el.startBtn.addEventListener('click', startGame);
-if (el.resetBtn) el.resetBtn.addEventListener('click', resetGame);
+el.checkOrderBtn?.addEventListener('click', handleOrderCheck);
+el.startBtn?.addEventListener('click', startGame);
+el.resetBtn?.addEventListener('click', resetGame);
+el.backToWelcomeBtn?.addEventListener('click', showWelcome);
+
 document.addEventListener('DOMContentLoaded', showWelcome);
 
 // Resize

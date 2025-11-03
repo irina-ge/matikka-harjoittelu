@@ -15,10 +15,11 @@
   --expr-minh: clamp(160px, 26vmin, 320px);
   --expr-fs:   clamp(6rem, 15vmin, 13rem);
 
-  --order-card-minw: 200px;             
-  --order-card-minh: 96px;             
+  /* Order cards */
+  --order-card-minw: 200px;
+  --order-card-minh: 96px;
   --order-card-fs:   clamp(4.2rem, 4.5vmin, 3rem);
-  --order-card-pad-x: 1.25rem; 
+  --order-card-pad-x: 1.25rem;
   --order-card-pad-y: 0.75rem;
   --order-card-radius: 22px;
   --order-card-border: 3px;
@@ -36,6 +37,7 @@ body {
 h1 { color: var(--brand-blue) !important; }
 h2, h3 { color: var(--text) !important; }
 
+/* Subtitle under H1 */
 main .text-muted {
   font-size: var(--subtitle-fs) !important;
   line-height: 1.4;
@@ -94,8 +96,7 @@ label.form-label {
 
 /* Unified size & typography */
 select.form-select,
-#startBtn, #resetBtn,
-a.to-scores {
+#startBtn, #resetBtn {
   height: var(--ctrl-h) !important;
   font-size: var(--ctrl-fs) !important;
   font-family: 'Baloo', sans-serif !important;
@@ -149,23 +150,15 @@ select.form-select:focus {
   border: 2px solid var(--brand-blue) !important;
   transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .1s ease;
 }
-#resetBtn:hover { background-color: var(--brand-orange) !important; color: #fff !important; border-color: var(--brand-orange) !important; transform: translateY(-1px); }
+#resetBtn:hover {
+  background-color: var(--brand-orange) !important;
+  color: #fff !important;
+  border-color: var(--brand-orange) !important;
+  transform: translateY(-1px);
+}
 #resetBtn:active { transform: scale(.98); }
 
-/* Scores button (link) */
-a.to-scores {
-  background-color: var(--brand-yellow) !important;
-  color: #fff !important;
-  border: none !important;
-  text-decoration: none !important;
-  margin: 2rem auto 0 auto !important;
-  box-shadow: none !important;
-  transition: background-color .2s ease, transform .1s ease;
-}
-a.to-scores:hover { background-color: var(--brand-orange) !important; transform: translateY(-1px); }
-a.to-scores:active { transform: scale(.98); }
-
-/* Comparison sign buttons (Valitse merkki) */
+/* Comparison sign buttons */
 .symbol-btn {
   font-size: clamp(3.5rem, 4.5vmin, 3.5rem);
   padding: clamp(0.1rem, 0.5vmin, 0.1rem) clamp(0.5rem, 2vmin, 1.5rem);
@@ -179,7 +172,7 @@ a.to-scores:active { transform: scale(.98); }
 .symbol-btn:hover { background-color: var(--brand-orange) !important; transform: translateY(-2px); }
 .symbol-btn:active { transform: translateY(1px) scale(0.98); }
 
-/* Dots (Kumpi on enemmän?) */
+/* Dots for "Kumpi on enemmän?" */
 .dot {
   display: inline-block;
   width: clamp(18px, 2.4vmin, 26px);
@@ -193,6 +186,7 @@ a.to-scores:active { transform: scale(.98); }
 }
 .dot:hover { background-color: var(--brand-orange); transform: scale(1.08); }
 
+/* Buttons in more-mode */
 #board-more .d-grid {
   display: flex !important;
   flex-direction: column;
@@ -224,6 +218,7 @@ a.to-scores:active { transform: scale(.98); }
 #board-more [data-more]:hover { background-color: var(--brand-orange) !important; transform: translateY(-1px); }
 #board-more [data-more]:active { transform: scale(.98); }
 
+/* Mobile: show symbols instead of text */
 @media (max-width: 1200px) {
   #board-more [data-more] {
     font-size: clamp(2rem, 6vw, 3rem);
@@ -235,15 +230,12 @@ a.to-scores:active { transform: scale(.98); }
     position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
     overflow: hidden; clip: rect(0,0,0,0); border: 0;
   }
-  #board-more [data-more="left"]::after  { content: ">";
-  }
-  #board-more [data-more="right"]::after { content: "<";
-  }
-  #board-more [data-more="equal"]::after { content: "=";
-  }
+  #board-more [data-more="left"]::after  { content: ">"; }
+  #board-more [data-more="right"]::after { content: "<"; }
+  #board-more [data-more="equal"]::after { content: "="; }
 }
 
-/* More-mode: vertical dot expressions (Level C) */
+/* More-mode: vertical dot expressions (level C) */
 .more-expr-vertical {
   display: flex;
   flex-direction: column;
@@ -335,7 +327,7 @@ a.to-scores:active { transform: scale(.98); }
   :root{
     --order-card-minw: 200px;
     --order-card-minh: 96px;
-    --order-card-fs: clamp(6.2rem, 4.5vmin, 3rem); 
+    --order-card-fs: clamp(6.2rem, 4.5vmin, 3rem);
   }
 }
 
@@ -356,7 +348,7 @@ a.to-scores:active { transform: scale(.98); }
 
 .visually-strong { outline: 3px solid rgba(92,128,154,.35); }
 
-/* Feedback */
+/* feedback text */
 .feedback {
   min-height: 2rem;
   font-weight: 200;
@@ -366,7 +358,7 @@ a.to-scores:active { transform: scale(.98); }
 .text-success { color:#2e7d32 !important; }
 .text-danger  { color:#c62828 !important; }
 
-/* Welcome */
+/* Welcome / instructions screen */
 .welcome-pane{
   padding: clamp(18px, 3vmin, 28px);
   border-radius: 24px;
@@ -376,9 +368,9 @@ a.to-scores:active { transform: scale(.98); }
   max-width: 920px;
   margin: 0 auto 1rem auto;
 }
-.welcome-pane h2 { font-weight: 200; color: var(--brand-blue); }
-.welcome-pane .lead { font-size: clamp(1.1rem, 2.2vmin, 1.5rem); }
-.welcome-pane ul   { font-size: clamp(1.1rem, 2.2vmin, 1.5rem); }
+.welcome-pane h2{ font-weight: 200; color: var(--brand-blue); }
+.welcome-pane .lead{ font-size: clamp(1.1rem, 2.2vmin, 1.5rem); }
+.welcome-pane ul{ font-size: clamp(1.1rem, 2.2vmin, 1.5rem); }
 
 @media (max-width: 768px) {
   select.form-select,
@@ -392,5 +384,51 @@ a.to-scores:active { transform: scale(.98); }
     min-width: 64px !important;
     min-height: 46px !important;
     font-size: clamp(1.05rem, 3.2vmin, 1.4rem) !important;
+  }
+}
+
+/* Final buttons */
+#finalCtas {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(0.75rem, 2.5vmin, 1.25rem);
+  margin-top: 2rem;
+}
+
+#finalCtas .to-scores,
+#finalCtas #backToWelcomeBtn {
+  background: var(--brand-yellow);
+  color: #fff;
+  border: none;
+  border-radius: 26px;
+  font-family: 'Baloo', sans-serif;
+  font-weight: 200;
+  font-size: clamp(1.05rem, 2.4vmin, 1.35rem);
+  line-height: 1;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: clamp(220px, 30vmin, 360px);
+  height: clamp(64px, 8vmin, 80px);
+  padding: 0 2.4rem !important;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.25s ease, transform 0.1s ease;
+}
+#finalCtas .to-scores:hover,
+#finalCtas #backToWelcomeBtn:hover { background: var(--brand-orange); transform: translateY(-2px); }
+#finalCtas .to-scores:active,
+#finalCtas #backToWelcomeBtn:active { transform: scale(0.98); }
+
+#finalCtas .to-scores.d-none,
+#finalCtas #backToWelcomeBtn.d-none { display: none !important; }
+
+@media (max-width: 576px) {
+  #finalCtas .to-scores,
+  #finalCtas #backToWelcomeBtn {
+    width: min(420px, 92%);
   }
 }

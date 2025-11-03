@@ -37,8 +37,10 @@ const el = {
   cOptions: document.getElementById('cOptions'),
 
   feedback: document.getElementById('feedback'),
-  finishActions: document.getElementById('finishActions'),
-  backToWelcome: document.getElementById('backToWelcome')
+
+  finalCtas: document.getElementById('finalCtas'),
+  scoreLink: document.getElementById('scoreLink'),
+  backToWelcomeBtn: document.getElementById('backToWelcomeBtn'),
 };
 
 // Utils
@@ -68,9 +70,13 @@ function showOnly(board){
   if(board) board.classList.remove('d-none');
 }
 
+function hideFinalButtons(){
+  el.finalCtas?.classList.add('d-none');
+}
+
 function showWelcome(){
   setFeedback('');
-  el.finishActions.classList.add('d-none');
+  hideFinalButtons();
   el.welcomePane.classList.remove('d-none');
   showOnly(null);
 }
@@ -82,7 +88,7 @@ function startGame(){
   state.startedAt = Date.now();
   setFeedback('');
   el.welcomePane.classList.add('d-none');
-  el.finishActions.classList.add('d-none');
+  hideFinalButtons();
   nextTask();
 }
 
@@ -98,8 +104,9 @@ function finalizeGame(){
     whenISO: new Date().toISOString()
   };
   localStorage.setItem('add_last', JSON.stringify(payload));
+
   setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);
-  el.finishActions.classList.remove('d-none');
+  el.finalCtas?.classList.remove('d-none');
 }
 
 function resetGame(){
@@ -110,7 +117,7 @@ function resetGame(){
   showWelcome();
 }
 
-// Level A
+/* Level A */
 function genTaskA(){
   const a = randInt(0,10), b = randInt(0,10);
   const correct = a+b;
@@ -123,7 +130,6 @@ function genTaskA(){
 
   return { expr, correct, options };
 }
-
 function renderTaskA(task){
   showOnly(el.boardA);
   el.aExpr.textContent = task.expr;
@@ -141,21 +147,18 @@ function renderTaskA(task){
   });
 }
 
-// Level B
+/* Level B */
 function makeBRowSpec(){
   const pattern = Math.random() < 0.5 ? 'leftMissing' : 'rightMissing';
   const a = randInt(0, 10);
   const b = randInt(0, 10);
   const s = a + b;
   if(pattern==='leftMissing'){
-    // ? + b = s => ? = s - b (= a)
     return { kind:'?+b=s', a, b, s, missing:a };
   } else {
-    // a + ? = s => ? = s - a (= b)
     return { kind:'a+?=s', a, b, s, missing:b };
   }
 }
-
 function genTaskB(){
   const rows = [];
   const usedMissing = new Set();
@@ -171,14 +174,13 @@ function genTaskB(){
   const choices = shuffle([ ...usedMissing, ...distract]);
   return { rows, choices };
 }
-
 function renderTaskB(task){
   showOnly(el.boardB);
   el.bRows.innerHTML = '';
   el.bBank.innerHTML = '';
   state.bPending = task.rows.length;
 
-  task.rows.forEach((r, idx)=>{
+  task.rows.forEach((r)=>{
     const row = document.createElement('div');
     row.className = 'b-eq';
     const hole = document.createElement('span');
@@ -188,17 +190,14 @@ function renderTaskB(task){
     hole.textContent = '?';
 
     if(r.kind==='?+b=s'){
-      // ? + b = s
       row.appendChild(hole);
       row.appendChild(document.createTextNode(' + ' + r.b + ' = ' + r.s));
     } else {
-      // a + ? = s
       row.appendChild(document.createTextNode(r.a + ' + '));
       row.appendChild(hole);
       row.appendChild(document.createTextNode(' = ' + r.s));
     }
 
-    // DnD events on hole
     hole.addEventListener('dragover', (e)=>e.preventDefault());
     hole.addEventListener('drop', (e)=>{
       e.preventDefault();
@@ -243,7 +242,7 @@ function renderTaskB(task){
   });
 }
 
-// Level C
+/* Level C */
 function genTaskC(){
   const target = randInt(0, 20);
   const a = randInt(0, target);
@@ -264,7 +263,6 @@ function genTaskC(){
   const options = shuffle([correctExpr, ...distractors]);
   return { target, options };
 }
-
 function renderTaskC(task){
   showOnly(el.boardC);
   el.cTarget.textContent = String(task.target);
@@ -281,9 +279,9 @@ function renderTaskC(task){
   });
 }
 
-// Flow
+/* Flow */
 function nextTask(){
-  el.finishActions.classList.add('d-none');
+  hideFinalButtons();
   setFeedback('');
 
   if(state.total >= CONFIG.questionCount){
@@ -304,8 +302,6 @@ function nextTask(){
 }
 
 function applyAnswer(ok){
-  // For level B, we call applyAnswer(true) only when all rows solved.
-  // For A/C — call on click.
   if(ok) state.correct += 1;
   state.total += 1;
 
@@ -317,8 +313,8 @@ function applyAnswer(ok){
   }
 }
 
-// Events
+/* Events */
 document.addEventListener('DOMContentLoaded', showWelcome);
 el.startBtn?.addEventListener('click', startGame);
 el.resetBtn?.addEventListener('click', resetGame);
-el.backToWelcome?.addEventListener('click', showWelcome);
+el.backToWelcomeBtn?.addEventListener('click', showWelcome);
