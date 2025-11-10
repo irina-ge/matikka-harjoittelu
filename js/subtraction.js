@@ -219,11 +219,9 @@ function nextStep() {
     whenISO: new Date().toISOString(),
   };
 
-  // новый ключ по уровню
   const levelKey = `sub_${state.level}_last`;
   localStorage.setItem(levelKey, JSON.stringify(payload));
 
-  // старый общий — на всякий
   localStorage.setItem('sub_last', JSON.stringify(payload));
 
   setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);

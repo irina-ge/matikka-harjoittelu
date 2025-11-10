@@ -37,13 +37,12 @@ const el = {
 
   feedback: document.getElementById("feedback"),
 
-  // именно такие id в твоём HTML
   finalCtas: document.getElementById("finalCtas"),
   scoreLink: document.getElementById("scoreLink"),
   backToWelcomeBtn: document.getElementById("backToWelcomeBtn"),
 };
 
-// utils
+// Utils
 const randInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 const shuffle = (arr) =>
@@ -109,9 +108,7 @@ function finalizeGame() {
     whenISO: new Date().toISOString(),
   };
 
-  // сохраняем по уровню
   localStorage.setItem(`add_${state.level}_last`, JSON.stringify(payload));
-  // и общий ключ — пусть будет
   localStorage.setItem("add_last", JSON.stringify(payload));
 
   setFeedback(
@@ -130,7 +127,7 @@ function resetGame() {
   showWelcome();
 }
 
-/* ---------- Level A ----------- */
+// Level A
 function genTaskA() {
   const a = randInt(0, 10),
     b = randInt(0, 10);
@@ -164,7 +161,7 @@ function renderTaskA(task) {
   });
 }
 
-/* ---------- Level B ----------- */
+// Level B
 function makeBRowSpec() {
   const pattern = Math.random() < 0.5 ? "leftMissing" : "rightMissing";
   const a = randInt(0, 10);
@@ -263,7 +260,7 @@ function renderTaskB(task) {
   });
 }
 
-/* ---------- Level C ----------- */
+// Level C
 function genTaskC() {
   const target = randInt(0, 20);
   const a = randInt(0, target);
@@ -301,7 +298,7 @@ function renderTaskC(task) {
   });
 }
 
-/* ---------- Flow ----------- */
+// Flow
 function nextTask() {
   hideFinalButtons();
   setFeedback("");
@@ -324,7 +321,6 @@ function nextTask() {
 }
 
 function applyAnswer(ok) {
-  // защита от “бесконечного” клика после конца
   if (state.total >= CONFIG.questionCount) {
     return;
   }
@@ -340,9 +336,8 @@ function applyAnswer(ok) {
   }
 }
 
-/* ---------- Events ----------- */
+// Events
 document.addEventListener("DOMContentLoaded", showWelcome);
 el.startBtn?.addEventListener("click", startGame);
 el.resetBtn?.addEventListener("click", resetGame);
 el.backToWelcomeBtn?.addEventListener("click", showWelcome);
-
