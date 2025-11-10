@@ -1,8 +1,3 @@
-/* =========================================================
-   comparison.js — Vertailutehtävät
-   Screens: welcome → game → final (buttons) → welcome
-   ========================================================= */
-
 const CONFIG = { questionCount: 10 };
 
 const state = {
@@ -36,7 +31,6 @@ const el = {
 
   feedback: document.getElementById('feedback'),
 
-  // финальные CTA как в Vähennyslasku
   finalCtas: document.getElementById('finalCtas'),
   scoreLink: document.getElementById('scoreLink'),
   backToWelcomeBtn: document.getElementById('backToWelcomeBtn'),
@@ -115,10 +109,10 @@ function renderBoard() {
   if (state.mode === 'sign') el.boardSign.classList.remove('d-none');
   else if (state.mode === 'more') el.boardMore.classList.remove('d-none');
   else if (state.mode === 'order') el.boardOrder.classList.remove('d-none');
-  hideEndButtons(); // на всякий случай
+  hideEndButtons();
 }
 
-// -------- Task generation
+// Task generation
 function levelPicker() {
   const A = () => ({ v: randInt(0, 20),  r: n => String(n) });
   const B = () => ({ v: randInt(0, 100), r: n => String(n) });
@@ -202,7 +196,7 @@ function genOrderTask() {
   return { kind:'expr', items, answer };
 }
 
-// -------- Rendering
+// Rendering
 function renderSignTask(task) {
   const useSoftWrap = state.level === 'C' && isMobile();
   const left  = useSoftWrap ? softWrapExpr(task.renderLeft)  : task.renderLeft;
@@ -312,7 +306,7 @@ function renderOrderTask(task) {
   updateOrderCardLabels();
 }
 
-// -------- Flow
+// Flow
 function renderTask(){
   clearFeedback();
   hideEndButtons();
@@ -382,16 +376,13 @@ function finalizeRun(){
     game: 'Vertailutehtävät'
   };
 
-  // новый точный ключ, например: "cmp_sign_A_last"
   const detailKey = `cmp_${state.mode}_${state.level}_last`;
   localStorage.setItem(detailKey, JSON.stringify(payload));
 
-  // старый общий ключ — пусть остаётся
   localStorage.setItem('cmp_last', JSON.stringify(payload));
 
   setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);
 
-  // показываем финальные кнопки
   const finalCtas = document.getElementById('finalCtas');
   if (finalCtas) {
     const scoreLink = document.getElementById('scoreLink');
