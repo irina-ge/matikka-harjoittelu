@@ -289,7 +289,7 @@ select.form-select:focus {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: clamp(0.75rem, 2.5vmin, 1.25rem);
+  gap: clamp(0.75rem, 2.5vmin, 1.25rem) !important;
   margin-top: 2rem;
 }
 
