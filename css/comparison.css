@@ -1,3 +1,4 @@
+/* Theme */
 :root {
   --brand-blue:   #5C809A;
   --brand-orange: #f47f7b;
@@ -134,7 +135,7 @@ select.form-select:focus {
   box-shadow: 0 0 0 0.3rem rgba(247,211,113,.3);
 }
 
-/* Start / Reset buttons */
+/* Start / reset buttons */
 #startBtn {
   background-color: var(--brand-yellow) !important;
   color: #fff !important;
@@ -372,6 +373,7 @@ select.form-select:focus {
 .welcome-pane .lead{ font-size: clamp(1.1rem, 2.2vmin, 1.5rem); }
 .welcome-pane ul{ font-size: clamp(1.1rem, 2.2vmin, 1.5rem); }
 
+/* Responsive tweaks */
 @media (max-width: 768px) {
   select.form-select,
   #startBtn, #resetBtn {
@@ -384,6 +386,51 @@ select.form-select:focus {
     min-width: 64px !important;
     min-height: 46px !important;
     font-size: clamp(1.05rem, 3.2vmin, 1.4rem) !important;
+  }
+}
+
+#finalCtas {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(0.75rem, 2.5vmin, 1.25rem);
+  margin-top: 2rem;
+}
+
+#finalCtas .to-scores,
+#finalCtas #backToWelcomeBtn {
+  background: var(--brand-yellow);
+  color: #fff;
+  border: none;
+  border-radius: 26px;
+  font-family: 'Baloo', sans-serif;
+  font-weight: 200;
+  font-size: clamp(1.05rem, 2.4vmin, 1.35rem);
+  line-height: 1;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: clamp(220px, 30vmin, 360px);
+  height: clamp(64px, 8vmin, 80px);
+  padding: 0 2.4rem !important;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.25s ease, transform 0.1s ease;
+}
+#finalCtas .to-scores:hover,
+#finalCtas #backToWelcomeBtn:hover { background: var(--brand-orange); transform: translateY(-2px); }
+#finalCtas .to-scores:active,
+#finalCtas #backToWelcomeBtn:active { transform: scale(0.98); }
+
+#finalCtas .to-scores.d-none,
+#finalCtas #backToWelcomeBtn.d-none { display: none !important; }
+
+@media (max-width: 576px) {
+  #finalCtas .to-scores,
+  #finalCtas #backToWelcomeBtn {
+    width: min(420px, 92%);
   }
 }
 

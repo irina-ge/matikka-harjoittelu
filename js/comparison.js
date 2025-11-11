@@ -370,15 +370,26 @@ function finalizeRun(){
     total: state.total,
     elapsedMs,
     elapsedSec: Math.round(elapsedMs/1000),
-    mode: state.mode,
-    level: state.level,
+    mode: state.mode,     // sign | more | order
+    level: state.level,   // A | B | C
     whenISO: new Date().toISOString(),
     game: 'Vertailutehtävät'
   };
+
+  const detailKey = `cmp_${state.mode}_${state.level}_last`;
+  localStorage.setItem(detailKey, JSON.stringify(payload));
+
   localStorage.setItem('cmp_last', JSON.stringify(payload));
 
   setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);
-  showEndButtons();
+
+  const finalCtas = document.getElementById('finalCtas');
+  if (finalCtas) {
+    const scoreLink = document.getElementById('scoreLink');
+    const backBtn = document.getElementById('backToWelcomeBtn');
+    if (scoreLink) scoreLink.classList.remove('d-none');
+    if (backBtn) backBtn.classList.remove('d-none');
+  }
 }
 
 function resetGame(){

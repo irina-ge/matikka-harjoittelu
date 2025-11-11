@@ -208,29 +208,33 @@ function applyAnswer(ok) {
 
 function nextStep() {
   if (state.total >= CONFIG.questionCount) {
-    // finish & store score
-    const elapsedMs = Date.now() - (state.startedAt || Date.now());
-    const payload = {
-      correct: state.correct,
-      total: state.total,
-      elapsedMs,
-      elapsedSec: Math.round(elapsedMs / 1000),
-      level: state.level,
-      game: 'Vähennyslasku',
-      whenISO: new Date().toISOString(),
-    };
-    localStorage.setItem('sub_last', JSON.stringify(payload));
+  const elapsedMs = Date.now() - (state.startedAt || Date.now());
+  const payload = {
+    correct: state.correct,
+    total: state.total,
+    elapsedMs,
+    elapsedSec: Math.round(elapsedMs / 1000),
+    level: state.level,
+    game: 'Vähennyslasku',
+    whenISO: new Date().toISOString(),
+  };
 
-    setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);
+  const levelKey = `sub_${state.level}_last`;
+  localStorage.setItem(levelKey, JSON.stringify(payload));
 
-    if (el.scoreLink) el.scoreLink.classList.remove('d-none');
-    const backBtn = ensureBackButton();
-    backBtn.classList.remove('d-none');
+  localStorage.setItem('sub_last', JSON.stringify(payload));
 
-    el.nextBtn.classList.add('d-none');
-    el.checkBtn.disabled = true;
-    return;
-  }
+  setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);
+
+  if (el.scoreLink) el.scoreLink.classList.remove('d-none');
+  const backBtn = ensureBackButton();
+  backBtn.classList.remove('d-none');
+
+  el.nextBtn.classList.add('d-none');
+  el.checkBtn.disabled = true;
+  return;
+}
+
   renderTask();
 }
 

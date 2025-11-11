@@ -78,7 +78,7 @@ select.form-select:focus{ border-color:var(--brand-yellow); box-shadow:0 0 0 .3r
 #startBtn:hover{ background:var(--brand-orange)!important; transform:translateY(-1px); }
 #startBtn:active{ transform:scale(.98); }
 
-/* Reset button*/
+/* Reset button */
 #resetBtn{
   background:#fff!important;
   color:var(--brand-blue)!important;
@@ -101,7 +101,7 @@ select.form-select:focus{ border-color:var(--brand-yellow); box-shadow:0 0 0 .3r
 .to-scores:hover{ background:var(--brand-orange)!important; transform:translateY(-1px); }
 .to-scores:active{ transform:scale(.98); }
 
-/* Final buttons */
+/* Final button */
 #finalCtas{
   display:flex;
   justify-content:center;
