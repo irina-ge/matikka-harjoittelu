@@ -36,28 +36,34 @@ main .text-muted{ font-size:clamp(1rem,2vmin,1.25rem)!important; }
 
 /* Controls */
 label.form-label{
-  font-size:var(--label-fs)!important;
-  color:var(--brand-blue);
-  font-weight:200;
+  font-size: clamp(1.3rem, 2.6vmin, 1.8rem) !important;
+  color: #5C809A;
+  font-weight: 200;
 }
+
 select.form-select,
-#startBtn,#resetBtn,.to-scores,#backToWelcomeBtn{
-  height:var(--ctrl-h)!important;
-  font-size:var(--ctrl-fs)!important;
-  border-radius:22px!important;
-  display:inline-flex!important;
-  align-items:center;
-  justify-content:center;
-  padding:0 1.8rem!important;
+#startBtn,
+#resetBtn {
+  height: clamp(120px, 8vmin, 90px) !important;
+  font-size: clamp(1.3rem, 2.6vmin, 1.8rem) !important;
+  font-family: 'Baloo', sans-serif !important;
+  border-radius: 26px !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2.4rem !important;
+  text-align: center;
 }
+
+/* Select*/
 select.form-select{
   background:#fff8e5;
-  border:2px solid var(--brand-yellow);
-  color:var(--text);
+  border:2px solid #f7d371;
+  color:#333;
   appearance:none;
   background-image:
-    linear-gradient(45deg,transparent 50%,var(--brand-blue) 50%),
-    linear-gradient(135deg,var(--brand-blue) 50%,transparent 50%);
+    linear-gradient(45deg,transparent 50%,#5C809A 50%),
+    linear-gradient(135deg,#5C809A 50%,transparent 50%);
   background-position:
     calc(100% - 24px) 1.2em,
     calc(100% - 18px) 1.2em;
@@ -66,30 +72,45 @@ select.form-select{
   padding-right:2.5rem;
   transition:all .2s ease;
 }
-select.form-select:hover{ background:#fff1c9; border-color:var(--brand-orange); }
-select.form-select:focus{ border-color:var(--brand-yellow); box-shadow:0 0 0 .3rem rgba(247,211,113,.3); }
+select.form-select:hover{ background:#fff1c9; border-color:#f47f7b; }
+select.form-select:focus{
+  border-color:#f7d371;
+  box-shadow:0 0 0 .3rem rgba(247,211,113,.3);
+}
 
+/* Aloita */
 #startBtn{
-  background:var(--brand-yellow)!important;
-  color:#fff!important;
-  border:none!important;
+  background:#f7d371 !important;
+  color:#fff !important;
+  border:none !important;
   transition:background .2s ease, transform .1s ease;
 }
-#startBtn:hover{ background:var(--brand-orange)!important; transform:translateY(-1px); }
+#startBtn:hover{ background:#f47f7b !important; transform:translateY(-1px); }
 #startBtn:active{ transform:scale(.98); }
 
-/* Reset button */
+/* Nollaa */
 #resetBtn{
-  background:#fff!important;
-  color:var(--brand-blue)!important;
-  border:2px solid var(--brand-blue)!important;
+  background:#fff !important;
+  color:#5C809A !important;
+  border:2px solid #5C809A !important;
   transition:background .2s ease, color .2s ease, border-color .2s ease, transform .1s ease;
 }
 #resetBtn:hover{
-  background:var(--brand-orange)!important; color:#fff!important; border-color:var(--brand-orange)!important; transform:translateY(-1px);
+  background:#f47f7b !important;
+  color:#fff !important;
+  border-color:#f47f7b !important;
+  transform:translateY(-1px);
 }
 #resetBtn:active{ transform:scale(.98); }
 
+@media (max-width: 768px){
+  select.form-select,
+  #startBtn,
+  #resetBtn {
+    width: 100%;
+    margin-top: .5rem;
+  }
+}
 
 .to-scores{
   background:var(--brand-yellow)!important;
