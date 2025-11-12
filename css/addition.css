@@ -181,19 +181,23 @@ select.form-select:focus{
   padding:clamp(12px,3vmin,24px);
   overflow:hidden;
 
-  /* главное: делаем ширину как у ответов */
-  max-width: 672px;     /* как у блока с ответами */
-  margin: 0 auto 1.5rem; /* центр и небольшое расстояние вниз */
+  max-width: 672px;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 12px 32px rgba(0,0,0,.08);
+  gap: .75rem;
 }
 
-/* на маленьком экране — как одна кнопка */
 @media (max-width: 576px) {
   .expr-box {
-    max-width: 340px;   /* примерно ширина одной твоей кнопки */
+    max-width: 340px;
   }
 }
-.expr{ font-size:var(--expr-fs); font-weight:900; line-height:1; color:#222; white-space:nowrap; }
-
+.expr{ 
+  font-size:var(--expr-fs); 
+  font-weight:900; 
+  line-height:1; 
+  color:#222; 
+  white-space:nowrap; }
 
 /* Answers grid (A) */
 .answers-grid{
@@ -275,32 +279,90 @@ select.form-select:focus{
 .b-chip.dragging{ opacity:.6; }
 
 /* Level C */
-.target-box{
-  background:#fffbea;
-  border:2px dashed rgba(92,128,154,.35);
-  color:var(--text);
-  border-radius:18px;
-  padding:.6rem 1rem;
-  font-size:clamp(1.2rem,2.2vmin,1.5rem);
-  display:inline-flex; gap:.5rem; align-items:center;
+/* Level C target box — wider, lower version of expr-box */
+/* Level C: käytetään täsmälleen samaa laatikkoa kuin A-tasolla */
+.target-box {
+  min-height: var(--expr-minh);
+  border-radius: 26px;
+  background: #fff;
+  border: 3px solid rgba(92,128,154,.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 3vmin, 24px);
+  overflow: hidden;
+
+  max-width: 672px;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 12px 32px rgba(0,0,0,.08);
+  gap: .75rem;
 }
-.target-box strong{ font-size:clamp(1.6rem,3vmin,2rem); color:#222; }
-.expr-grid{
-  display:grid; grid-template-columns:repeat(2,minmax(140px,1fr));
-  gap:clamp(10px,2vmin,16px);
-  max-width:720px; margin:0 auto;
+
+.target-box .target-label {
+  font-size: clamp(3rem, 3vmin, 2rem);
+  color: var(--brand-blue);
+  font-weight: 300;
 }
-.expr-card{
-  border:none; background:var(--brand-yellow); color:#fff;
-  border-radius:18px;
-  padding:clamp(.6rem,2vmin,.9rem);
-  font-size:clamp(1.2rem,2.4vmin,1.6rem);
-  text-align:center;
-  box-shadow:0 4px 10px rgba(0,0,0,.08);
-  transition:background .2s ease, transform .1s ease;
+
+.target-box strong {
+  font-size: var(--expr-fs);
+  font-weight: 900;
+  line-height: 1;
+  color: #222;
 }
-.expr-card:hover{ background:var(--brand-orange); transform:translateY(-1px); }
-.expr-card:active{ transform:scale(.98); }
+
+@media (max-width: 576px) {
+  .target-box {
+    max-width: 340px;
+    flex-direction: row;
+  }
+}
+
+
+
+.expr-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(0.75rem, 2.5vmin, 1.25rem); 
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.expr-card {
+  background: var(--brand-yellow);
+  color: #fff;
+  border: none;
+  border-radius: 26px;
+  min-width: clamp(220px, 30vmin, 360px);
+  height: clamp(64px, 8vmin, 80px);
+  padding: 0 2.4rem !important;
+  font-size: clamp(3.5rem, 2.4vmin, 1.5rem);
+  font-family: 'Baloo', sans-serif;
+  font-weight: 200;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  transition: background-color .25s ease, transform .1s ease;
+}
+
+.expr-card:hover {
+  background: var(--brand-orange);
+  transform: translateY(-2px);
+}
+
+.expr-card:active {
+  transform: scale(.98);
+}
+
+@media (max-width: 576px) {
+  .expr-card {
+    width: min(420px, 92%);
+  }
+}
 
 /* Feedback */
 .feedback{ min-height:2rem; font-weight:200; text-align:center; font-size:clamp(1.1rem,2.2vmin,1.4rem); }
@@ -319,7 +381,6 @@ select.form-select:focus{
 .welcome-pane .lead{ font-size:clamp(1.1rem,2.2vmin,1.5rem); }
 .welcome-pane ul{ font-size:clamp(1.05rem,2vmin,1.35rem); }
 
-/* Responsive tweak */
 @media (max-width:768px){
   select.form-select,#startBtn,#resetBtn{ width:100%; margin-top:.5rem; }
 }
