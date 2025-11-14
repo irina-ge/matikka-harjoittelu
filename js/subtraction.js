@@ -287,7 +287,7 @@ if (!ok && selectedCell) selectedCell.classList.add('incorrect');
   const start = t.startAt, end = t.res;
   placeMarker(start, 'start');
   for (let n = start; n <= end; n++) markCell(n, 'step');
-  el.hint.textContent = `Koska ? − ${t.b} = ${t.c}, aloitusluku on ${t.c}+${t.b} = ${end}`;
+  el.hint.textContent = `Koska ? − ${t.b} = ${t.c}, aloitusluku on ${t.c} + ${t.b} = ${end}`;
 } else if (t.kind === 'C') {
   const start = t.startAt, end = t.endAt;
   placeMarker(start, 'start');
