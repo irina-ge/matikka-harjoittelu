@@ -268,21 +268,25 @@ select.form-select:focus {
 
 #board-order .order-instructions,
 #board-order .col-12.text-center.mb-2 {
-  font-size: clamp(1.2rem, 2.3vmin, 1.6rem);
+  font-size: clamp(1.3rem, 2.6vmin, 1.8rem);
   font-weight: 200;
   color: var(--brand-blue);
   margin-bottom: .75rem !important;
 }
 
-#orderPool, #orderTarget {
+#orderPool,
+#orderTarget {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: .6rem !important;
-  padding: clamp(.5rem, 1.8vmin, 1rem) !important;
-  background: #ffffff;
-  border: 2px dashed rgba(92,128,154,.35);
-  border-radius: 16px;
+  gap: clamp(0.75rem, 2.5vmin, 1.25rem);
+  padding: clamp(12px, 3vmin, 24px) !important;
+  background: #fff;
+  border: 3px solid rgba(92,128,154,.25) !important;
+  border-radius: 26px !important;
+  box-shadow: 0 12px 32px rgba(0,0,0,.08);
+  max-width: 672px;
+  margin: 0 auto 1.5rem;
 }
 
 #board-order #orderPool button,
@@ -332,20 +336,41 @@ select.form-select:focus {
   }
 }
 
+/* Tarkista button */
 #checkOrderBtn {
-  height: var(--ctrl-h) !important;
-  font-size: var(--ctrl-fs) !important;
-  font-family: 'Baloo', sans-serif !important;
-  border-radius: 26px !important;
+  height: clamp(64px, 8vmin, 80px) !important;
+  min-width: clamp(220px, 30vmin, 360px);
   background-color: var(--brand-yellow) !important;
   color: #fff !important;
   border: none !important;
+  border-radius: 26px !important;
+  font-family: 'Baloo', sans-serif !important;
+  font-weight: 200;
+  font-size: clamp(1.05rem, 2.4vmin, 1.35rem);
+  line-height: 1;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0 2.4rem !important;
-  box-shadow: none !important;
-  transition: background-color .2s ease, transform .1s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  transition: background-color 0.25s ease, transform 0.1s ease;
 }
-#checkOrderBtn:hover { background-color: var(--brand-orange) !important; transform: translateY(-1px); }
-#checkOrderBtn:active { transform: scale(.98); }
+
+#checkOrderBtn:hover {
+  background-color: var(--brand-orange) !important;
+  transform: translateY(-2px);
+}
+
+#checkOrderBtn:active {
+  transform: scale(.98);
+}
+
+@media (max-width: 576px) {
+  #checkOrderBtn {
+    width: min(420px, 92%);
+  }
+}
 
 .visually-strong { outline: 3px solid rgba(92,128,154,.35); }
 
