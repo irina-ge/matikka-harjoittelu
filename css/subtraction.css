@@ -1,7 +1,7 @@
 :root {
-  --brand-blue:   #5C809A;
-  --brand-orange: #f47f7b;
-  --brand-yellow: #f7d371;
+  --brand-blue:   #6eb7d7;
+  --brand-orange: #ff9818;
+  --brand-yellow: #ffc91d;
   --text:         #333;
   --bg:           #f2f9fc;
 
@@ -131,8 +131,8 @@ select.form-select:focus {
   text-align: center;
   font-size: clamp(1.2rem, 2.2vmin, 1.5rem);
 }
-.text-success { color: #2e7d32 !important; }
-.text-danger  { color: #c62828 !important; }
+.text-success { color: #73cc3c !important; }
+.text-danger  { color: #fc3932 !important; }
 
 /* Number Line */
 .line-wrap {
@@ -184,21 +184,21 @@ select.form-select:focus {
 }
 
 .cell.correct {
-  background: #2e7d32 !important;
+  background: #73cc3c !important;
   color: #fff !important;
-  border-color: #2e7d32 !important;
+  border-color: #73cc3c !important;
   box-shadow: 0 0 0 3px rgba(46, 125, 50, .35);
 }
 
 .cell.incorrect {
-  background: #c62828 !important;
+  background: #fc3932 !important;
   color: #fff !important;
-  border-color: #c62828 !important;
+  border-color: #fc3932 !important;
   box-shadow: 0 0 0 3px rgba(198, 40, 40, .35);
 }
 
 
-.cell.step { background: #e6f4ff; border-color: #5C809A; }
+.cell.step { background: #e6f4ff; border-color: #6eb7d7; }
 
 /* Start / End markers */
 .marker {
@@ -209,7 +209,7 @@ select.form-select:focus {
   border-radius: 50%;
 }
 .marker.start { background: var(--brand-yellow); }
-.marker.end   { background: #2e7d32; }
+.marker.end   { background: #73cc3c; }
 
 /* Task header */
 #taskHeader {
@@ -224,7 +224,7 @@ select.form-select:focus {
   min-height: 1.8rem;
   font-size: clamp(1.3rem, 2.8vmin, 1.8rem);
   font-weight: 700;
-  color: #2e7d32;
+  color: #73cc3c;
   margin-top: 0.5rem;
 }
 

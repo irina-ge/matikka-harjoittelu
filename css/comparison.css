@@ -1,8 +1,8 @@
 /* Theme */
 :root {
-  --brand-blue:   #5C809A;
-  --brand-orange: #f47f7b;
-  --brand-yellow: #f7d371;
+  --brand-blue:   #6eb7d7;
+  --brand-orange: #ff9818;
+  --brand-yellow: #ffc91d;
   --text:         #333333;
   --bg:           #f2f9fc;
 
@@ -381,8 +381,8 @@ select.form-select:focus {
   text-align: center;
   font-size: clamp(1.3rem, 2.6vmin, 1.8rem);
 }
-.text-success { color:#2e7d32 !important; }
-.text-danger  { color:#c62828 !important; }
+.text-success { color:#73cc3c !important; }
+.text-danger  { color:#fc3932 !important; }
 
 /* Welcome / instructions screen */
 .welcome-pane{
