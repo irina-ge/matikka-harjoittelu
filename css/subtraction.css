@@ -213,9 +213,9 @@ select.form-select:focus {
 
 /* Task header */
 #taskHeader {
-  font-size: clamp(3.5rem, 3.4vmin, 2.4rem);
+  font-size: clamp(5rem, 10vmin, 10rem);
   color: #222;
-  font-weight: 600;
+  font-weight: 900;
   margin-bottom: 1rem;
   letter-spacing: 0.03em;
 }
@@ -235,9 +235,9 @@ select.form-select:focus {
   font-size: clamp(1.05rem, 2.4vmin, 1.4rem);
   border-radius: 20px;
 
-  background: var(--brand-blue) !important;
+  background: var(--brand-yellow) !important;
   color: #fff !important;
-  border: 2px solid var(--brand-blue) !important;
+  border: 2px solid var(--brand-yellow) !important;
 
   transition: background-color .2s ease,
               transform .1s ease;
@@ -289,7 +289,7 @@ select.form-select:focus {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: clamp(0.75rem, 2.5vmin, 1.25rem);
+  gap: clamp(0.75rem, 2.5vmin, 1.25rem) !important;
   margin-top: 2rem;
 }
 

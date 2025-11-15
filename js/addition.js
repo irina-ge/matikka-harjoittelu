@@ -78,6 +78,10 @@ function hideFinalButtons() {
   if (el.finalCtas) el.finalCtas.classList.add("d-none");
 }
 
+function hideFinalButtons(){
+  el.finalCtas?.classList.add('d-none');
+}
+
 function showWelcome() {
   setFeedback("");
   hideFinalButtons();
@@ -127,7 +131,7 @@ function resetGame() {
   showWelcome();
 }
 
-// Level A
+/* Level A */
 function genTaskA() {
   const a = randInt(0, 10),
     b = randInt(0, 10);
@@ -143,7 +147,6 @@ function genTaskA() {
 
   return { expr, correct, options };
 }
-
 function renderTaskA(task) {
   showOnly(el.boardA);
   el.aExpr.textContent = task.expr;
@@ -161,7 +164,7 @@ function renderTaskA(task) {
   });
 }
 
-// Level B
+/* Level B */
 function makeBRowSpec() {
   const pattern = Math.random() < 0.5 ? "leftMissing" : "rightMissing";
   const a = randInt(0, 10);
@@ -189,7 +192,6 @@ function genTaskB() {
   const choices = shuffle([...usedMissing, ...distract]);
   return { rows, choices };
 }
-
 function renderTaskB(task) {
   showOnly(el.boardB);
   el.bRows.innerHTML = "";
@@ -260,7 +262,7 @@ function renderTaskB(task) {
   });
 }
 
-// Level C
+/* Level C */
 function genTaskC() {
   const target = randInt(0, 20);
   const a = randInt(0, target);
@@ -281,7 +283,6 @@ function genTaskC() {
   const options = shuffle([correctExpr, ...distractors]);
   return { target, options };
 }
-
 function renderTaskC(task) {
   showOnly(el.boardC);
   el.cTarget.textContent = String(task.target);
@@ -298,7 +299,7 @@ function renderTaskC(task) {
   });
 }
 
-// Flow
+/* Flow */
 function nextTask() {
   hideFinalButtons();
   setFeedback("");
@@ -336,7 +337,7 @@ function applyAnswer(ok) {
   }
 }
 
-// Events
+/* Events */
 document.addEventListener("DOMContentLoaded", showWelcome);
 el.startBtn?.addEventListener("click", startGame);
 el.resetBtn?.addEventListener("click", resetGame);
