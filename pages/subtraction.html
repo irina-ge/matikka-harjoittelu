@@ -99,6 +99,7 @@
 
         <!-- Game Card -->
         <section class="card game-card p-3 p-md-4">
+          <!-- Welcome -->
           <div id="welcomePane" class="welcome-pane text-center">
             <h2 class="mb-3">Tervetuloa lukusuoralle!</h2>
             <p class="lead mb-3">
@@ -120,7 +121,14 @@
           <div id="board" class="d-none">
             <div class="line-wrap">
               <div id="numberLine" class="number-line" role="group" aria-label="lukusuora 0–20"></div>
-              <div id="hint" class="hint text-center mt-2"></div>
+              <div id="hint" class="hint text-center mt-2">
+                <p id="baseHint" class="hint-base">
+                  Vinkki: Aloitusluku on merkitty keltaisella pisteellä lukusuoralla.
+                  Voit klikata numeroita lukusuoralla ja laskea askeleita, kun etsit oikeaa vastausta.
+                </p>
+                <p id="solutionHint" class="hint-solution"></p>
+              </div>
+
             </div>
 
             <!-- Controls under line -->
