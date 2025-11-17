@@ -336,6 +336,13 @@ select.form-select:focus {
   }
 }
 
+.order-hint {
+  font-size: clamp(0.95rem, 2vmin, 1.15rem);
+  color: #333;
+  font-weight: 200;
+  margin-top: -0.25rem;
+}
+
 /* Tarkista button */
 #checkOrderBtn {
   height: clamp(64px, 8vmin, 80px) !important;
