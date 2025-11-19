@@ -35,6 +35,10 @@ const el = {
   backToWelcomeBtn: document.getElementById('backToWelcomeBtn'),
 };
 
+function setLevelDisabled(disabled) {
+  if (el.level) el.level.disabled = disabled;
+}
+
 // Helpers
 const randInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
 
@@ -141,7 +145,7 @@ function renderTask() {
   state.selected = null;
   clearFeedback();
 
-  if (el.solutionHint) el.solutionHint.textContent = ''; // очищаем только зелёную подсказку
+  if (el.solutionHint) el.solutionHint.textContent = '';
 
   el.nextBtn.classList.add('d-none');
   el.checkBtn.disabled = false;
@@ -167,6 +171,8 @@ function showWelcome() {
   clearFeedback();
   hideEndButtons();
 
+  setLevelDisabled(false);
+
   if (el.backToWelcomeBtn) {
     el.backToWelcomeBtn.classList.add('d-none');
     el.backToWelcomeBtn.removeEventListener('click', showWelcome);
@@ -179,6 +185,8 @@ function startGame() {
   state.total = 0;
   state.correct = 0;
   state.startedAt = Date.now();
+
+  setLevelDisabled(true);
 
   el.welcomePane.classList.add('d-none');
   el.board.classList.remove('d-none');
@@ -235,6 +243,7 @@ function resetGame() {
   state.total = 0;
   state.correct = 0;
   state.startedAt = null;
+  setLevelDisabled(false);
   showWelcome();
 }
 
@@ -306,4 +315,3 @@ el.nextBtn?.addEventListener('click', nextStep);
 
 // Initial
 document.addEventListener('DOMContentLoaded', showWelcome);
-

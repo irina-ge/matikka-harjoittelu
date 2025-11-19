@@ -129,10 +129,50 @@ select.form-select {
   padding-right: 2.5rem;
   transition: all 0.2s ease;
 }
+
 select.form-select:hover { background-color: #fff1c9; border-color: var(--brand-orange); }
 select.form-select:focus {
   border-color: var(--brand-yellow);
   box-shadow: 0 0 0 0.3rem rgba(247,211,113,.3);
+}
+
+/* Selects */
+select.form-select {
+  border-radius: 20px !important;
+  background-color: #fff8e5;
+  border: 2px solid var(--brand-yellow);
+  color: var(--text);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--brand-blue) 50%),
+    linear-gradient(135deg, var(--brand-blue) 50%, transparent 50%);
+  background-position:
+    calc(100% - 24px) calc(1.2em),
+    calc(100% - 18px) calc(1.2em);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.5rem;
+  transition: all 0.2s ease;
+}
+
+select.form-select:hover { background-color: #fff1c9; border-color: var(--brand-orange); }
+select.form-select:focus {
+  border-color: var(--brand-yellow);
+  box-shadow: 0 0 0 0.3rem rgba(247,211,113,.3);
+}
+
+select.form-select:disabled {
+  background-color: #e9f3f8 !important;
+  border-color: #c0d3dd !important;
+  color: #9aa8b3 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9aa8b3 50%),
+    linear-gradient(135deg, #9aa8b3 50%, transparent 50%);
 }
 
 /* Start / reset buttons */

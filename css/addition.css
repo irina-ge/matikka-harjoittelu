@@ -83,6 +83,26 @@ select.form-select:focus{
   box-shadow:0 0 0 .3rem rgba(247,211,113,.3);
 }
 
+select.form-select:disabled,
+select.form-select:disabled:hover,
+select.form-select:disabled:focus {
+  background-color: #e9f3f8 !important;
+  border-color: #c0d3dd !important;
+  color: #9aa8b3 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9aa8b3 50%),
+    linear-gradient(135deg, #9aa8b3 50%, transparent 50%);
+  background-position:
+    calc(100% - 24px) 1.2em,
+    calc(100% - 18px) 1.2em;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
 /* Aloita */
 #startBtn{
   background:#ffc91d !important;
@@ -149,11 +169,9 @@ select.form-select:focus{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-
   min-width:clamp(220px, 30vmin, 360px);
   height:clamp(64px, 8vmin, 80px);
   padding:0 2.4rem!important;
-
   box-shadow:0 8px 24px rgba(0,0,0,.08);
   transition:background-color .25s ease, transform .1s ease;
 }
@@ -186,7 +204,6 @@ select.form-select:focus{
   justify-content: center;
   padding:clamp(12px,3vmin,24px);
   overflow:hidden;
-
   max-width: 672px;
   margin: 0 auto 1.5rem;
   box-shadow: 0 12px 32px rgba(0,0,0,.08);

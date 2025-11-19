@@ -84,6 +84,26 @@ select.form-select:focus {
   box-shadow: 0 0 0 .3rem rgba(247,211,113,.3);
 }
 
+select.form-select:disabled,
+select.form-select:disabled:hover,
+select.form-select:disabled:focus {
+  background-color: #e9f3f8 !important;
+  border-color: #c0d3dd !important;
+  color: #9aa8b3 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9aa8b3 50%),
+    linear-gradient(135deg, #9aa8b3 50%, transparent 50%);
+  background-position:
+    calc(100% - 24px) 1.2em,
+    calc(100% - 18px) 1.2em;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
 /* Start / Reset buttons */
 #startBtn {
   background: var(--brand-yellow) !important;
