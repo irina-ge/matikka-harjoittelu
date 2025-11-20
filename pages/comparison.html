@@ -114,14 +114,15 @@
       ja paina sitten <strong>Aloita</strong>.
     </p>
     <ul class="list-unstyled m-0">
-      <li>• 10 tehtävää per peli</li>
-      <li>• Vastaa jokaisessa tehtävässä valitsemalla oikea vaihtoehto</li>
-      <li>• Lopuksi voit katsoa tuloksen napilla “Näytä pisteet”</li>
+      <li> 10 tehtävää per peli</li>
+      <li> Vastaa jokaisessa tehtävässä valitsemalla oikea vaihtoehto</li>
+      <li> Lopuksi voit katsoa tuloksen napilla “Näytä pisteet”</li>
     </ul>
   </div>
 
     <!-- Boards -->
     <div id="board" class="mb-3">
+      <!-- sign -->
       <div id="board-sign" class="d-none">
         <div class="row g-2 align-items-center justify-content-center">
           <div class="col-5 col-md-4">
@@ -162,10 +163,28 @@
       <!-- order -->
       <div id="board-order" class="d-none">
         <div class="row g-3 justify-content-center">
-          <div class="col-12 text-center mb-2">Järjestä pienimmästä suurimpaan:</div>
-          <div class="col-12 d-flex flex-wrap gap-2 justify-content-center" id="orderPool" aria-label="järjestettävät kortit"></div>
-          <div class="col-12 d-flex flex-wrap gap-2 justify-content-center border rounded p-3" id="orderTarget" aria-label="pudotusalue"></div>
-          <div class="col-12 text-center"><button id="checkOrderBtn" class="btn btn-primary">Tarkista</button></div>
+          <div class="col-12 text-center mb-2">
+            Järjestä pienimmästä suurimpaan:
+          </div>
+
+          <div class="col-12 d-flex flex-wrap gap-2 justify-content-center"
+            id="orderPool"
+            aria-label="järjestettävät kortit">
+          </div>
+
+          <div class="col-12 text-center order-hint">
+            <p>Vinkki: Klikkaa lukuja ylemmässä laatikossa – ne siirtyvät alempaan laatikkoon.</p>
+            <p>Voit myös vetää ja pudottaa kortteja.</p>
+          </div>
+
+          <div class="col-12 d-flex flex-wrap gap-2 justify-content-center border rounded p-3"
+            id="orderTarget"
+            aria-label="pudotusalue">
+          </div>
+
+          <div class="col-12 text-center">
+            <button id="checkOrderBtn" class="btn btn-primary">Tarkista</button>
+          </div>
         </div>
       </div>
     </div>

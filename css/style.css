@@ -120,22 +120,35 @@ p {
 /* Clear Scores button */
 #clear-scores {
   font-family: "Baloo", sans-serif;
-  font-size: 1.5rem;
+  font-weight: 200;
+  font-size: clamp(1.05rem, 2.4vmin, 1.35rem);
   background-color: #ffc91d;
   color: #ffffff;
   border: none;
-  border-radius: 1.5rem;
+  border-radius: 26px;
   padding: 0.6rem 2.5rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, transform 0.1s ease;
+  line-height: 1;
+  text-decoration: none;
   display: inline-block;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  min-width: clamp(220px, 30vmin, 360px);
+  height: clamp(64px, 8vmin, 80px);
+  padding: 0 2.4rem !important;
 }
 
 #clear-scores:hover {
   background-color: #ff9818;
   color: #ffffff;
   transform: translateY(-2px);
+}
+
+#clear-scores:active {
+  transform: scale(0.98);
 }
 
 /* Modal overlay */

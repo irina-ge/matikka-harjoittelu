@@ -20,7 +20,10 @@ const el = {
   board: document.getElementById('board'),
   numberLine: document.getElementById('numberLine'),
   taskHeader: document.getElementById('taskHeader'),
+
   hint: document.getElementById('hint'),
+  baseHint: document.getElementById('baseHint'),
+  solutionHint: document.getElementById('solutionHint'),
 
   checkBtn: document.getElementById('checkBtn'),
   nextBtn: document.getElementById('nextBtn'),
@@ -32,7 +35,11 @@ const el = {
   backToWelcomeBtn: document.getElementById('backToWelcomeBtn'),
 };
 
-//Helpers
+function setLevelDisabled(disabled) {
+  if (el.level) el.level.disabled = disabled;
+}
+
+// Helpers
 const randInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
 
 function setFeedback(text, ok = null) {
@@ -41,7 +48,9 @@ function setFeedback(text, ok = null) {
   if (ok === true) el.feedback.classList.add('text-success');
   if (ok === false) el.feedback.classList.add('text-danger');
 }
-function clearFeedback() { setFeedback(''); }
+function clearFeedback() {
+  setFeedback('');
+}
 
 function hideEndButtons() {
   if (el.scoreLink) el.scoreLink.classList.add('d-none');
@@ -51,7 +60,6 @@ function hideEndButtons() {
 function ensureBackButton() {
   if (el.backToWelcomeBtn && el.backToWelcomeBtn instanceof HTMLElement) return el.backToWelcomeBtn;
 
-  // Button
   const btn = document.createElement('button');
   btn.id = 'backToWelcomeBtn';
   btn.type = 'button';
@@ -73,7 +81,7 @@ function ensureBackButton() {
   return btn;
 }
 
-//Number line rendering
+// Number line rendering
 function buildNumberLine() {
   el.numberLine.innerHTML = '';
   for (let n = 0; n <= 20; n++) {
@@ -106,12 +114,11 @@ function clearMarkers() {
   el.numberLine.querySelectorAll('.marker').forEach(m => m.remove());
 }
 
-//Task generation
+// Task generation
 function genTask() {
   const L = state.level;
 
   if (L === 'A') {
-    // a - b = ?, 0..20; b 1..10; a>=b
     const b = randInt(1, 10);
     const a = randInt(b, 20);
     const res = a - b;
@@ -119,14 +126,12 @@ function genTask() {
   }
 
   if (L === 'B') {
-    // ? - b = c, 0..20; b 1..10; c 0..20; start = c + b <= 20
     const b = randInt(1, 10);
     const c = randInt(0, 20 - b);
     const start = c + b;
     return { kind: 'B', b, c, res: start, header: `? − ${b} = ${c}`, startAt: c, backwards: b };
   }
 
-  // C: a - b - c = ?, 0..20; a >= b + c
   const b = randInt(1, 10);
   const c = randInt(1, 10);
   const a = randInt(b + c, 20);
@@ -134,44 +139,39 @@ function genTask() {
   return { kind: 'C', a, b, c, res, header: `${a} − ${b} − ${c} = ?`, startAt: a, endAt: res };
 }
 
-//Rendering a task
+// Rendering a task
 function renderTask() {
   state.currentTask = genTask();
   state.selected = null;
   clearFeedback();
-  el.hint.textContent = '';
+
+  if (el.solutionHint) el.solutionHint.textContent = '';
+
   el.nextBtn.classList.add('d-none');
   el.checkBtn.disabled = false;
 
   hideEndButtons();
 
-  // Header
   el.taskHeader.textContent = state.currentTask.header;
 
-  // Reset number line
   buildNumberLine();
   clearMarkers();
   unmarkAll('step');
   unmarkAll('active');
 
-  // Place start marker
   const t = state.currentTask;
-  if (t.kind === 'A') {
-    placeMarker(t.startAt, 'start');
-  } else if (t.kind === 'B') {
-    placeMarker(t.startAt, 'start');
-  } else if (t.kind === 'C') {
-    placeMarker(t.startAt, 'start');
-  }
+  placeMarker(t.startAt, 'start');
 }
 
-//Flow
+// Flow
 function showWelcome() {
   el.welcomePane.classList.remove('d-none');
   el.board.classList.add('d-none');
   el.taskHeader.classList.add('d-none');
   clearFeedback();
   hideEndButtons();
+
+  setLevelDisabled(false);
 
   if (el.backToWelcomeBtn) {
     el.backToWelcomeBtn.classList.add('d-none');
@@ -185,6 +185,8 @@ function startGame() {
   state.total = 0;
   state.correct = 0;
   state.startedAt = Date.now();
+
+  setLevelDisabled(true);
 
   el.welcomePane.classList.add('d-none');
   el.board.classList.remove('d-none');
@@ -208,32 +210,31 @@ function applyAnswer(ok) {
 
 function nextStep() {
   if (state.total >= CONFIG.questionCount) {
-  const elapsedMs = Date.now() - (state.startedAt || Date.now());
-  const payload = {
-    correct: state.correct,
-    total: state.total,
-    elapsedMs,
-    elapsedSec: Math.round(elapsedMs / 1000),
-    level: state.level,
-    game: 'Vähennyslasku',
-    whenISO: new Date().toISOString(),
-  };
+    const elapsedMs = Date.now() - (state.startedAt || Date.now());
+    const payload = {
+      correct: state.correct,
+      total: state.total,
+      elapsedMs,
+      elapsedSec: Math.round(elapsedMs / 1000),
+      level: state.level,
+      game: 'Vähennyslasku',
+      whenISO: new Date().toISOString(),
+    };
 
-  const levelKey = `sub_${state.level}_last`;
-  localStorage.setItem(levelKey, JSON.stringify(payload));
+    const levelKey = `sub_${state.level}_last`;
+    localStorage.setItem(levelKey, JSON.stringify(payload));
+    localStorage.setItem('sub_last', JSON.stringify(payload));
 
-  localStorage.setItem('sub_last', JSON.stringify(payload));
+    setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);
 
-  setFeedback(`Valmis! Oikein: ${state.correct}/${state.total}. Aika: ${payload.elapsedSec}s`, true);
+    if (el.scoreLink) el.scoreLink.classList.remove('d-none');
+    const backBtn = ensureBackButton();
+    backBtn.classList.remove('d-none');
 
-  if (el.scoreLink) el.scoreLink.classList.remove('d-none');
-  const backBtn = ensureBackButton();
-  backBtn.classList.remove('d-none');
-
-  el.nextBtn.classList.add('d-none');
-  el.checkBtn.disabled = true;
-  return;
-}
+    el.nextBtn.classList.add('d-none');
+    el.checkBtn.disabled = true;
+    return;
+  }
 
   renderTask();
 }
@@ -242,10 +243,11 @@ function resetGame() {
   state.total = 0;
   state.correct = 0;
   state.startedAt = null;
+  setLevelDisabled(false);
   showWelcome();
 }
 
-// Answer selection on line
+// Answer selection
 function handleCellClick(target) {
   if (!target?.classList.contains('cell')) return;
   unmarkAll('active');
@@ -258,42 +260,46 @@ function handleCellClick(target) {
 function checkAnswer() {
   const t = state.currentTask;
   if (!t) return;
+
   if (typeof state.selected !== 'number') {
     setFeedback('Valitse vastaus lukusuoralta.', false);
     return;
   }
 
   let correctNumber = t.res;
-  if (t.kind === 'B') correctNumber = t.res;
-
   const ok = state.selected === correctNumber;
+
   unmarkAll('correct');
   unmarkAll('incorrect');
 
   const correctCell = el.numberLine.querySelector(`.cell[data-n="${correctNumber}"]`);
   const selectedCell = el.numberLine.querySelector(`.cell[data-n="${state.selected}"]`);
 
-if (correctCell) correctCell.classList.add('correct');
-if (!ok && selectedCell) selectedCell.classList.add('incorrect');
+  if (correctCell) correctCell.classList.add('correct');
+  if (!ok && selectedCell) selectedCell.classList.add('incorrect');
 
-  // visualize path/finish
   clearMarkers();
-  if (t.kind === 'A') {
-  const start = t.startAt, end = t.endAt;
+  const start = t.startAt;
+  const end = t.endAt ?? t.res;
+
   placeMarker(start, 'start');
-  for (let n = end; n <= start; n++) markCell(n, 'step');
-  el.hint.textContent = `${t.a} − ${t.b} = ${end}`;
-} else if (t.kind === 'B') {
-  const start = t.startAt, end = t.res;
-  placeMarker(start, 'start');
-  for (let n = start; n <= end; n++) markCell(n, 'step');
-  el.hint.textContent = `Koska ? − ${t.b} = ${t.c}, aloitusluku on ${t.c} + ${t.b} = ${end}`;
-} else if (t.kind === 'C') {
-  const start = t.startAt, end = t.endAt;
-  placeMarker(start, 'start');
-  for (let n = end; n <= start; n++) markCell(n, 'step');
-  el.hint.textContent = `${t.a} − ${t.b} − ${t.c} = ${end}`;
-}
+
+  if (t.kind === 'B') {
+    for (let n = start; n <= end; n++) markCell(n, 'step');
+  } else {
+    for (let n = end; n <= start; n++) markCell(n, 'step');
+  }
+
+  if (el.solutionHint) {
+    if (t.kind === 'A') {
+      el.solutionHint.textContent = `${t.a} − ${t.b} = ${end}`;
+    } else if (t.kind === 'B') {
+      el.solutionHint.textContent =
+        `Koska ? − ${t.b} = ${t.c}, aloitusluku on ${t.c} + ${t.b} = ${end}`;
+    } else if (t.kind === 'C') {
+      el.solutionHint.textContent = `${t.a} − ${t.b} − ${t.c} = ${end}`;
+    }
+  }
 
   applyAnswer(ok);
 }
@@ -307,5 +313,5 @@ el.resetBtn?.addEventListener('click', resetGame);
 el.checkBtn?.addEventListener('click', checkAnswer);
 el.nextBtn?.addEventListener('click', nextStep);
 
-// first paint
+// Initial
 document.addEventListener('DOMContentLoaded', showWelcome);

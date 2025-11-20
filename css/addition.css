@@ -11,6 +11,7 @@
 
   --expr-minh:clamp(140px,24vmin,280px);
   --expr-fs:clamp(5rem, 10vmin, 10rem);
+  --subtitle-fs: clamp(1.2rem, 2.2vmin, 1.5rem);
 }
 
 *{ box-sizing:border-box; }
@@ -23,7 +24,11 @@ body{
 .header-image{ margin-bottom:0; }
 h1{ color:var(--brand-blue)!important; }
 h2,h3{ color:var(--text)!important; }
-main .text-muted{ font-size:clamp(1rem,2vmin,1.25rem)!important; }
+main .text-muted {
+  font-size: var(--subtitle-fs) !important;
+  line-height: 1.4;
+  font-weight: 200;
+}
 
 /* Card */
 .game-card{
@@ -76,6 +81,26 @@ select.form-select:hover{ background:#fff1c9; border-color:#ff9818; }
 select.form-select:focus{
   border-color:#ffc91d;
   box-shadow:0 0 0 .3rem rgba(247,211,113,.3);
+}
+
+select.form-select:disabled,
+select.form-select:disabled:hover,
+select.form-select:disabled:focus {
+  background-color: #e9f3f8 !important;
+  border-color: #c0d3dd !important;
+  color: #9aa8b3 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9aa8b3 50%),
+    linear-gradient(135deg, #9aa8b3 50%, transparent 50%);
+  background-position:
+    calc(100% - 24px) 1.2em,
+    calc(100% - 18px) 1.2em;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
 }
 
 /* Aloita */
@@ -144,11 +169,9 @@ select.form-select:focus{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-
   min-width:clamp(220px, 30vmin, 360px);
   height:clamp(64px, 8vmin, 80px);
   padding:0 2.4rem!important;
-
   box-shadow:0 8px 24px rgba(0,0,0,.08);
   transition:background-color .25s ease, transform .1s ease;
 }
@@ -181,7 +204,6 @@ select.form-select:focus{
   justify-content: center;
   padding:clamp(12px,3vmin,24px);
   overflow:hidden;
-
   max-width: 672px;
   margin: 0 auto 1.5rem;
   box-shadow: 0 12px 32px rgba(0,0,0,.08);
@@ -387,7 +409,6 @@ select.form-select:focus{
   justify-content: center;
   padding: clamp(12px, 3vmin, 24px);
   overflow: hidden;
-
   max-width: 672px;
   margin: 0 auto 1.5rem;
   box-shadow: 0 12px 32px rgba(0,0,0,.08);
@@ -438,7 +459,6 @@ select.form-select:focus{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   box-shadow: 0 8px 24px rgba(0,0,0,.08);
   transition: background-color .25s ease, transform .1s ease;
 }
@@ -464,16 +484,124 @@ select.form-select:focus{
 .text-danger{ color:#fc3932!important; }
 
 /* Welcome */
-.welcome-pane{
-  padding:clamp(18px,3vmin,28px);
-  border-radius:24px;
-  background:#fffbea;
-  border:2px dashed rgba(92,128,154,.35);
-  max-width:920px; margin:0 auto 1rem auto;
+.welcome-pane {
+  position: relative;
+  padding: clamp(26px, 4vmin, 40px);
+  border-radius: 32px;
+  background: #ffffff;
+  border: 3px solid rgba(110, 183, 215, 0.45);
+  max-width: 920px;
+  margin: 0 auto 1.5rem;
+  box-shadow:
+    inset 0 0 22px rgba(110, 183, 215, 0.12),
+    0 16px 36px rgba(0, 0, 0, 0.08);
+
+  overflow: hidden;
 }
-.welcome-pane h2{ color:var(--brand-blue); font-weight:200; }
-.welcome-pane .lead{ font-size:clamp(1.1rem,2.2vmin,1.5rem); }
-.welcome-pane ul{ font-size:clamp(1.05rem,2vmin,1.35rem); }
+
+.welcome-pane::before {
+  content: "Peli-info";
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  padding: 0.32rem 0.9rem;
+  border-radius: 999px;
+  background: var(--brand-yellow);
+  color: #fff;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.welcome-pane::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle, #ffc91d 0%, #ff9818 100%);
+  opacity: .55;
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+.welcome-pane h2 {
+  color: var(--brand-blue);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3.4vmin, 2.15rem);
+  margin-bottom: 1rem;
+  position: relative;
+  text-align: center;
+}
+
+.welcome-pane h2::before,
+.welcome-pane h2::after {
+  content: "★";
+  position: absolute;
+  font-size: 1.1rem;
+  color: #ff9818;
+  opacity: 0.85;
+}
+
+.welcome-pane h2::before {
+  left: -1.2rem;
+  top: 0.4rem;
+}
+.welcome-pane h2::after {
+  right: -1.2rem;
+  top: 0.4rem;
+}
+
+.welcome-pane .lead {
+  font-size: clamp(1.15rem, 2.3vmin, 1.45rem);
+  margin-bottom: 1.2rem;
+  color: #444;
+  text-align: center;
+}
+
+.welcome-pane .divider {
+  width: 80px;
+  height: 8px;
+  margin: 0.5rem auto 1rem;
+  background: linear-gradient(
+    90deg,
+    #6eb7d7,
+    #ffc91d,
+    #ff9818,
+    #ffc91d,
+    #6eb7d7
+  );
+  border-radius: 999px;
+  opacity: 0.8;
+}
+
+.welcome-pane ul {
+  font-size: clamp(1.05rem, 2.2vmin, 1.35rem);
+  margin-top: 0.5rem;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #555;
+}
+
+.welcome-pane ul li {
+  margin-bottom: 0.4rem;
+  position: relative;
+  padding-left: 1.6rem;
+  list-style: none;
+}
+
+.welcome-pane ul li::before {
+  content: "●";
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  font-size: 0.9rem;
+  color: var(--brand-blue);
+  opacity: 0.85;
+}
 
 @media (max-width:768px){
   select.form-select,#startBtn,#resetBtn{ width:100%; margin-top:.5rem; }
